@@ -1,0 +1,15 @@
+*.class
+*.ipr
+*.iml
+target/
+.idea/
+src/main/webapp/WEB-INF/classes/
+indexes/
+.classpath
+.project
+.settings/
+*/.~lock*
+*.mwb.bak
+.reviewboardrc
+/target
+/MavenLearn.log
