@@ -2,12 +2,18 @@ package com.guard.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.dom4j.DocumentException;
+
+import com.guard.utils.MessageUtils;
+import com.guard.utils.TextMessage;
 import com.guard.utils.ValidationUtil;
 
 /**
@@ -39,7 +45,46 @@ public class LoginServlet extends HttpServlet{
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		super.doPost(request, response);
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		PrintWriter out = response.getWriter();
+		
+		try {
+			Map<String,String> requestMap = MessageUtils.parseXml(request);
+			//发送方账号(open_id)
+			String fromUserName = requestMap.get("FromUserName");
+			// 公众帐号
+		    String toUserName = requestMap.get("ToUserName");
+			// 消息类型
+			String msgType = requestMap.get("MsgType");
+			//消息内容
+			String Content = requestMap.get("Content");
+			//消息时间
+			String CreateTime = requestMap.get("CreateTime");
+			//消息id
+			String MsgId = requestMap.get("MsgId");
+			//信息类型(消息或者事件)
+			String Event =requestMap.get("Event");
+			
+			//xml格式的消息数据
+			String responseXml = null;
+			if(Event != null && Event.equals("subscribe")){
+				TextMessage tx = new TextMessage();
+				tx.setFromUserName(toUserName);
+				tx.setToUserName(fromUserName);
+				tx.setCreateTime(new Date().getTime());
+				tx.setMsgType("text");
+				tx.setContent("欢迎关注我的微信，这里是爱为一个人~~。。。。");
+				responseXml = MessageUtils.textMessageToXml(tx);
+				out.print(responseXml);
+			}
+			
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}finally{
+			out.close();
+			out = null;
+		}
 	}
 
 	
