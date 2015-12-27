@@ -57,15 +57,38 @@ public class LoginServlet extends HttpServlet{
 		    String toUserName = requestMap.get("ToUserName");
 			// 消息类型
 			String msgType = requestMap.get("MsgType");
-			//消息内容
-			String Content = requestMap.get("Content");
 			//消息时间
 			String CreateTime = requestMap.get("CreateTime");
-			//消息id
-			String MsgId = requestMap.get("MsgId");
+			if("text".equals(msgType)){
+				//消息内容
+				String Content = requestMap.get("Content");
+				//消息id
+				String MsgId = requestMap.get("MsgId");
+				System.out.println("fromUserName:"+fromUserName);
+				System.out.println("toUserName:"+toUserName);
+				System.out.println("msgType："+msgType);
+				System.out.println("Content:"+Content);
+				System.out.println("CreateTime:"+CreateTime);
+				System.out.println("MsgId:"+MsgId);
+				if("1".equals(Content)){
+					//xml格式的消息数据
+					String responseXml = null;
+					
+					TextMessage tx = new TextMessage();
+					tx.setFromUserName(toUserName);
+					tx.setToUserName(fromUserName);
+					tx.setCreateTime(new Date().getTime());
+					tx.setMsgType("text");
+					tx.setContent("欢迎你，你输入的是1"+"\n"+"换行了");
+					responseXml = MessageUtils.textMessageToXml(tx);
+					out.print(responseXml);
+					System.out.println("responseXml:"+responseXml);
+				}
+			}
 			//信息类型(消息或者事件)
 			String Event =requestMap.get("Event");
-			
+			System.out.println("Event:"+Event);
+			System.out.println("-------------------");
 			//xml格式的消息数据
 			String responseXml = null;
 			if(Event != null && Event.equals("subscribe")){
@@ -77,8 +100,8 @@ public class LoginServlet extends HttpServlet{
 				tx.setContent("欢迎关注我的微信，这里是爱为一个人~~。。。。");
 				responseXml = MessageUtils.textMessageToXml(tx);
 				out.print(responseXml);
+				System.out.println("responseXml:"+responseXml);
 			}
-			
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}finally{
