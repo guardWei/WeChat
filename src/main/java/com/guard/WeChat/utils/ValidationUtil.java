@@ -1,4 +1,4 @@
-package com.guard.utils;
+package com.guard.WeChat.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -74,7 +74,7 @@ public class ValidationUtil {
    }
    
    /**
-    * 字段排序算法
+    * 字典序排序算法
     * @author guard
     * @version 2015年12月25日16:24:08
     * @param a

@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.dom4j.DocumentException;
 
-import com.guard.utils.MessageUtils;
-import com.guard.utils.TextMessage;
-import com.guard.utils.ValidationUtil;
+import com.guard.WeChat.responseMessage.TextMessageP;
+import com.guard.WeChat.utils.MessageUtils;
+import com.guard.WeChat.utils.ValidationUtil;
 
 /**
  * 接受来自微信服务器的请求
@@ -74,7 +74,7 @@ public class LoginServlet extends HttpServlet{
 					//xml格式的消息数据
 					String responseXml = null;
 					
-					TextMessage tx = new TextMessage();
+					TextMessageP tx = new TextMessageP();
 					tx.setFromUserName(toUserName);
 					tx.setToUserName(fromUserName);
 					tx.setCreateTime(new Date().getTime());
@@ -92,7 +92,7 @@ public class LoginServlet extends HttpServlet{
 			//xml格式的消息数据
 			String responseXml = null;
 			if(Event != null && Event.equals("subscribe")){
-				TextMessage tx = new TextMessage();
+				TextMessageP tx = new TextMessageP();
 				tx.setFromUserName(toUserName);
 				tx.setToUserName(fromUserName);
 				tx.setCreateTime(new Date().getTime());
