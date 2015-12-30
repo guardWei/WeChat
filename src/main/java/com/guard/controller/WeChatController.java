@@ -48,6 +48,8 @@ public class WeChatController {
 			
 			try {
 				Map<String,String> requestMap = MessageUtils.parseXml(request);
+				//消息id
+				String msgId = requestMap.get("MsgId");
 				//发送方账号(open_id)
 				String fromUserName = requestMap.get("FromUserName");
 				// 公众帐号
@@ -55,19 +57,20 @@ public class WeChatController {
 				// 消息类型
 				String msgType = requestMap.get("MsgType");
 				//消息时间
-				String CreateTime = requestMap.get("CreateTime");
+				String createTime = requestMap.get("CreateTime");
+				
+				System.out.println("MsgId:"+msgId);
+				System.out.println("FromUserName:"+fromUserName);
+				System.out.println("ToUserName:"+toUserName);
+				System.out.println("MsgType:"+msgType);
+				System.out.println("CreateTime:"+createTime);
+				
 				if("text".equals(msgType)){
-					//消息内容
-					String Content = requestMap.get("Content");
-					//消息id
-					String MsgId = requestMap.get("MsgId");
-					System.out.println("fromUserName:"+fromUserName);
-					System.out.println("toUserName:"+toUserName);
-					System.out.println("msgType："+msgType);
-					System.out.println("Content:"+Content);
-					System.out.println("CreateTime:"+CreateTime);
-					System.out.println("MsgId:"+MsgId);
-					if("1".equals(Content)){
+					//文本消息内容
+					String content = requestMap.get("Content");
+					
+					System.out.println("Content:"+content);
+					if("1".equals(content)){
 						//xml格式的消息数据
 						String responseXml = null;
 						
@@ -81,6 +84,30 @@ public class WeChatController {
 						out.print(responseXml);
 						System.out.println("responseXml:"+responseXml);
 					}
+				}else if("voice".equals(msgType)){
+					    //语音消息媒体id，可以调用多媒体文件下载接口拉取数据。
+					    String mediaId = requestMap.get("MediaId");
+					    //语音格式，如amr，speex等
+					    String format = requestMap.get("Format");
+					    //语音识别结果，UTF8编码 
+					    String recognition = requestMap.get("Recognition");
+					    
+					    System.out.println("MediaId:"+mediaId);
+					    System.out.println("Format:"+format);
+					    System.out.println("Recognition:"+recognition);
+					    
+					    //xml格式的消息数据
+						String responseXml = null;
+						
+						TextMessageP tx = new TextMessageP();
+						tx.setFromUserName(toUserName);
+						tx.setToUserName(fromUserName);
+						tx.setCreateTime(new Date().getTime());
+						tx.setMsgType("text");
+						tx.setContent(recognition);
+						responseXml = MessageUtils.textMessageToXml(tx);
+						out.print(responseXml);
+						System.out.println("responseXml:"+responseXml);
 				}
 				//信息类型(消息或者事件)
 				String Event =requestMap.get("Event");

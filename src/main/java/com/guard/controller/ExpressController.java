@@ -1,6 +1,5 @@
 package com.guard.controller;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Map;
@@ -94,7 +93,7 @@ public class ExpressController {
 						tx.setToUserName(fromUserName);
 						tx.setCreateTime(new Date().getTime());
 						tx.setMsgType("text");
-						tx.setContent("欢迎关注我的微信公众号，欢欢I MISS　YOU!");
+						tx.setContent("欢迎关注我的微信公众号，这里可以进行快递查询，请输入的信息中至少包含快递公司名和快递单号（如“请帮我查下中通373834566926”）");
 						responseXml = MessageUtils.textMessageToXml(tx);
 						out.print(responseXml);
 						System.out.println("responseXml:"+responseXml);
