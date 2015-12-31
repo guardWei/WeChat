@@ -6,14 +6,14 @@ package com.guard.WeChat.responseMessage;
  * @version 2015年12月28日15:35:28
  */
 public class ImageMessageP extends BaseMessageP {
-	private String MediaId; // 通过素材管理接口上传多媒体文件，得到的id
+	private Image Image;
 
-	public String getMediaId() {
-		return MediaId;
+	public Image getImage() {
+		return Image;
 	}
 
-	public void setMediaId(String mediaId) {
-		MediaId = mediaId;
+	public void setImage(Image image) {
+		Image = image;
 	}
 
 }

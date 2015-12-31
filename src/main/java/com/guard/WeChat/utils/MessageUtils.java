@@ -14,7 +14,9 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.guard.WeChat.responseMessage.ImageMessageP;
 import com.guard.WeChat.responseMessage.TextMessageP;
+import com.guard.WeChat.responseMessage.VoiceMessageP;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -22,6 +24,49 @@ import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
 
 public class MessageUtils {
+	// 请求消息类型：文本
+	public static final String REQ_MESSAGE_TYPE_TEXT = "text";
+	// 请求消息类型：图片
+	public static final String REQ_MESSAGE_TYPE_IMAGE = "image";
+	// 请求消息类型：语音
+	public static final String REQ_MESSAGE_TYPE_VOICE = "voice";
+	// 请求消息类型：视频
+	public static final String REQ_MESSAGE_TYPE_VIDEO = "video";
+	// 请求消息类型：地理位置
+	public static final String REQ_MESSAGE_TYPE_LOCATION = "location";
+	// 请求消息类型：链接
+	public static final String REQ_MESSAGE_TYPE_LINK = "link";
+
+	// 请求消息类型：事件推送
+	public static final String REQ_MESSAGE_TYPE_EVENT = "event";
+
+	// 事件类型：subscribe(订阅)
+	public static final String EVENT_TYPE_SUBSCRIBE = "subscribe";
+	// 事件类型：unsubscribe(取消订阅)
+	public static final String EVENT_TYPE_UNSUBSCRIBE = "unsubscribe";
+	// 事件类型：scan(关注用户扫描带参数二维码)
+	public static final String EVENT_TYPE_SCAN = "SCAN";
+	// 事件类型：LOCATION(上报地理位置)
+	public static final String EVENT_TYPE_LOCATION = "LOCATION";
+	// 事件类型：CLICK(自定义菜单:点击菜单拉取消息时的事件推送 )
+	public static final String EVENT_TYPE_CLICK = "CLICK";
+	// 事件类型：VIEW(自定义菜单:点击菜单跳转链接时的事件推送)
+	public static final String EVENT_TYPE_VIEW = "VIEW";
+
+	// 响应消息类型：文本
+	public static final String RESP_MESSAGE_TYPE_TEXT = "text";
+	// 响应消息类型：图片
+	public static final String RESP_MESSAGE_TYPE_IMAGE = "image";
+	// 响应消息类型：语音
+	public static final String RESP_MESSAGE_TYPE_VOICE = "voice";
+	// 响应消息类型：视频
+	public static final String RESP_MESSAGE_TYPE_VIDEO = "video";
+	// 响应消息类型：音乐
+	public static final String RESP_MESSAGE_TYPE_MUSIC = "music";
+	// 响应消息类型：图文
+	public static final String RESP_MESSAGE_TYPE_NEWS = "news";
+	
+
 	//微信端请求信息封装
     public static Map<String, String> parseXml(HttpServletRequest request) throws IOException, DocumentException{
     	//将解析结构存储在HashMap中
@@ -59,6 +104,26 @@ public class MessageUtils {
     	return xstream.toXML(textMessage);
     }
     
+    /**
+     * 语音消息对象转换成xml
+     * @param voiceMessage
+     * @return
+     */
+    public static String voiceMessageToXml(VoiceMessageP voiceMessage){
+		xstream.alias("xml", voiceMessage.getClass());
+		return xstream.toXML(voiceMessage);
+	}
+    
+    /**
+     * 图片消息对象转成xml
+     * @param imageMessage
+     * @return
+     */
+	public static String imageMessageToXml(ImageMessageP imageMessage){
+		xstream.alias("xml", imageMessage.getClass());
+		return xstream.toXML(imageMessage);
+	}
+	
     /**
 	 * 扩展xstream，使其支持CDATA块
 	 * @author guard

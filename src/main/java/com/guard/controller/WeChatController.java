@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.guard.WeChat.responseMessage.TextMessageP;
+import com.guard.WeChat.responseMessage.Voice;
+import com.guard.WeChat.responseMessage.VoiceMessageP;
 import com.guard.WeChat.utils.MessageUtils;
 import com.guard.WeChat.utils.ValidationUtil;
 
@@ -65,7 +67,7 @@ public class WeChatController {
 				System.out.println("MsgType:"+msgType);
 				System.out.println("CreateTime:"+createTime);
 				
-				if("text".equals(msgType)){
+				if(MessageUtils.REQ_MESSAGE_TYPE_TEXT.equals(msgType)){
 					//文本消息内容
 					String content = requestMap.get("Content");
 					
@@ -78,13 +80,13 @@ public class WeChatController {
 						tx.setFromUserName(toUserName);
 						tx.setToUserName(fromUserName);
 						tx.setCreateTime(new Date().getTime());
-						tx.setMsgType("text");
+						tx.setMsgType(MessageUtils.RESP_MESSAGE_TYPE_TEXT);
 						tx.setContent("欢迎你，你输入的是1"+"\n"+"对么");
 						responseXml = MessageUtils.textMessageToXml(tx);
 						out.print(responseXml);
 						System.out.println("responseXml:"+responseXml);
 					}
-				}else if("voice".equals(msgType)){
+				}else if(MessageUtils.REQ_MESSAGE_TYPE_VOICE.equals(msgType)){
 					    //语音消息媒体id，可以调用多媒体文件下载接口拉取数据。
 					    String mediaId = requestMap.get("MediaId");
 					    //语音格式，如amr，speex等
@@ -99,32 +101,56 @@ public class WeChatController {
 					    //xml格式的消息数据
 						String responseXml = null;
 						
-						TextMessageP tx = new TextMessageP();
+						/*TextMessageP tx = new TextMessageP();
 						tx.setFromUserName(toUserName);
 						tx.setToUserName(fromUserName);
 						tx.setCreateTime(new Date().getTime());
-						tx.setMsgType("text");
+						tx.setMsgType(MessageUtils.RESP_MESSAGE_TYPE_TEXT);
 						tx.setContent(recognition);
 						responseXml = MessageUtils.textMessageToXml(tx);
+						out.print(responseXml);
+						System.out.println("responseXml:"+responseXml);*/
+						
+						VoiceMessageP vo = new VoiceMessageP();
+						vo.setFromUserName(toUserName);
+						vo.setToUserName(fromUserName);
+						vo.setCreateTime(new Date().getTime());
+						vo.setMsgType(MessageUtils.RESP_MESSAGE_TYPE_VOICE);
+						Voice v = new Voice();
+						v.setMediaId("OlZ3pvKsyTgflms__fsueerd5bYeejoZHGUHqdsb3M88UY4sLfcoGop4E-trPb3A");
+						vo.setVoice(v);
+						responseXml = MessageUtils.voiceMessageToXml(vo);
 						out.print(responseXml);
 						System.out.println("responseXml:"+responseXml);
 				}
 				//信息类型(消息或者事件)
-				String Event =requestMap.get("Event");
-				System.out.println("Event:"+Event);
+				String event =requestMap.get("Event");
+				System.out.println("Event:"+event);
 				System.out.println("-------------------");
 				//xml格式的消息数据
 				String responseXml = null;
-				if(Event != null && Event.equals("subscribe")){
+				if(event != null && MessageUtils.EVENT_TYPE_SUBSCRIBE.equals(event)){
 					TextMessageP tx = new TextMessageP();
 					tx.setFromUserName(toUserName);
 					tx.setToUserName(fromUserName);
 					tx.setCreateTime(new Date().getTime());
-					tx.setMsgType("text");
+					tx.setMsgType(MessageUtils.RESP_MESSAGE_TYPE_TEXT);
 					tx.setContent("欢迎关注我的微信公众号，欢欢I MISS　YOU!");
 					responseXml = MessageUtils.textMessageToXml(tx);
 					out.print(responseXml);
 					System.out.println("responseXml:"+responseXml);
+					System.out.println("-------------------");
+				}else if(event != null && MessageUtils.EVENT_TYPE_UNSUBSCRIBE.equals(event)){
+					TextMessageP tx = new TextMessageP();
+					tx.setFromUserName(toUserName);
+					tx.setToUserName(fromUserName);
+					tx.setCreateTime(new Date().getTime());
+					tx.setMsgType(MessageUtils.RESP_MESSAGE_TYPE_TEXT);
+					tx.setContent("你已经成功取消了关注，期待下次再关注！");
+					responseXml = MessageUtils.textMessageToXml(tx);
+					out.print(responseXml);
+					System.out.println("responseXml:"+responseXml);
+					System.out.println("-------------------");
 				}
 			} catch (DocumentException e) {
 				e.printStackTrace();

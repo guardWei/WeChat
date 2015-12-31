@@ -6,15 +6,14 @@ package com.guard.WeChat.responseMessage;
  * @version 2015年12月30日17:29:47
  */
 public class VoiceMessageP extends BaseMessageP {
-	// 通过上传多媒体文件，得到的id
-	private String MediaId;
+	private Voice Voice;
 
-	public String getMediaId() {
-		return MediaId;
+	public Voice getVoice() {
+		return Voice;
 	}
 
-	public void setMediaId(String mediaId) {
-		MediaId = mediaId;
+	public void setVoice(Voice voice) {
+		Voice = voice;
 	}
 
 }
