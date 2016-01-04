@@ -14,8 +14,12 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.guard.WeChat.responseMessage.Article;
+import com.guard.WeChat.responseMessage.ArticlesMessageP;
 import com.guard.WeChat.responseMessage.ImageMessageP;
+import com.guard.WeChat.responseMessage.MusicMessageP;
 import com.guard.WeChat.responseMessage.TextMessageP;
+import com.guard.WeChat.responseMessage.VideoMessageP;
 import com.guard.WeChat.responseMessage.VoiceMessageP;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
@@ -122,6 +126,37 @@ public class MessageUtils {
 	public static String imageMessageToXml(ImageMessageP imageMessage){
 		xstream.alias("xml", imageMessage.getClass());
 		return xstream.toXML(imageMessage);
+	}
+	
+	/**
+	 * 音乐消息对象转成xml
+	 * @param musicMessage
+	 * @return
+	 */
+	public static String musicMessageToXml(MusicMessageP musicMessage){
+		xstream.alias("xml", musicMessage.getClass());
+		return xstream.toXML(musicMessage);
+	}
+	
+	/**
+	 * 视频消息对象转成xml
+	 * @param videoMessage
+	 * @return
+	 */
+	public static String videoMessageToXml(VideoMessageP videoMessage){
+		xstream.alias("xml", videoMessage.getClass());
+		return xstream.toXML(videoMessage);
+	}
+	
+	/**
+	 * 图文消息转换成xml
+	 * @param articlesMessage
+	 * @return
+	 */
+	public static String articlesMessageToXml(ArticlesMessageP articlesMessage){
+		xstream.alias("xml", articlesMessage.getClass());
+		xstream.alias("item", new Article().getClass());
+		return xstream.toXML(articlesMessage);
 	}
 	
     /**

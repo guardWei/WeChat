@@ -6,14 +6,14 @@ package com.guard.WeChat.responseMessage;
  * @version 2015年12月31日17:32:28
  */
 public class VideoMessageP extends BaseMessageP {
-	private Video video;
+	private Video Video;
 
 	public Video getVideo() {
-		return video;
+		return Video;
 	}
 
 	public void setVideo(Video video) {
-		this.video = video;
+		Video = video;
 	}
 
 }
