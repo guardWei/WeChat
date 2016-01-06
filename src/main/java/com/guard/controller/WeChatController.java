@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.guard.WeChat.responseMessage.Article;
 import com.guard.WeChat.responseMessage.ArticlesMessageP;
-import com.guard.WeChat.responseMessage.Image;
-import com.guard.WeChat.responseMessage.ImageMessageP;
 import com.guard.WeChat.responseMessage.Music;
 import com.guard.WeChat.responseMessage.MusicMessageP;
 import com.guard.WeChat.responseMessage.TextMessageP;
@@ -27,6 +25,7 @@ import com.guard.WeChat.responseMessage.Voice;
 import com.guard.WeChat.responseMessage.VoiceMessageP;
 import com.guard.WeChat.utils.MessageUtils;
 import com.guard.WeChat.utils.ValidationUtil;
+import com.guard.other.api.FaceRecognizeApi;
 
 /**
  * 微信后台controller
@@ -196,7 +195,7 @@ public class WeChatController {
 					    //xml格式的消息数据
 						String responseXml = null;
 					    
-						ImageMessageP im = new ImageMessageP();
+						/*ImageMessageP im = new ImageMessageP();
 						im.setFromUserName(toUserName);
 						im.setToUserName(fromUserName);
 						im.setCreateTime(new Date().getTime());
@@ -204,7 +203,16 @@ public class WeChatController {
 						Image i = new Image();
 						i.setMediaId("aJZ_e1niD2S4VUdpCaVB5wbTiMC9ewr4W4gciF3RZOIRSsAN0btvs6HLg2EwAnYD");
 						im.setImage(i);
-						responseXml = MessageUtils.imageMessageToXml(im);
+						responseXml = MessageUtils.imageMessageToXml(im);*/
+						
+						TextMessageP tx = new TextMessageP();
+						tx.setToUserName(fromUserName);
+						tx.setFromUserName(toUserName);
+						tx.setMsgType(MessageUtils.RESP_MESSAGE_TYPE_TEXT);
+						tx.setCreateTime(new Date().getTime());
+						tx.setContent(FaceRecognizeApi.getFaceRecognitionInfo(picUrl));
+						responseXml = MessageUtils.textMessageToXml(tx);
+						
 						out.print(responseXml);
 						System.out.println("responseXml:"+responseXml);
 				}else if(MessageUtils.REQ_MESSAGE_TYPE_VIDEO.equals(msgType)){
